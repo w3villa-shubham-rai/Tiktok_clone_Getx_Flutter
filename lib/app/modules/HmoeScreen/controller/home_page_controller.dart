@@ -9,6 +9,10 @@ class Homepagecontroller extends GetxController{
   {
      index.value=indexofBottombNavigation;
 
-     debugPrint("index value $index");
+    //  debugPrint("index value $index");
   }
+
+  // List of Pges
+  final pages=['Home Screen','Search Screen','Add Page Screen','Message Screen','Profile Screen',];
+  
 }

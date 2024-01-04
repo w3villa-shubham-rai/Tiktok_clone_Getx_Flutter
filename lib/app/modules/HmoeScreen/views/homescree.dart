@@ -31,6 +31,7 @@ class HomeScreen extends GetView<Homepagecontroller>{
             BottomNavigationBarItem(icon: Icon(Icons.person,size: 30,),label: 'Profile'),
           ]
         ),
+        body:Center(child: Text(controller.pages[controller.index.value])),
       );
       });
     });
