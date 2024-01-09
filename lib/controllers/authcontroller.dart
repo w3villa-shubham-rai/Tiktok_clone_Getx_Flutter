@@ -48,7 +48,9 @@ void pickImage() async {
 Future<String>_uploadToStorageImage(File image)async{
         Reference ref=firebasestorage.ref().child('profilepics').child(firebaseauth.currentUser!.uid);
         UploadTask uploadTask= ref.putFile(image);
+        uploadTask.whenComplete(() => Get.snackbar("image upload", "image sucess to uplaod"));
         TaskSnapshot snap=await uploadTask;
+        print('Bytes transferred: ${snap.bytesTransferred}');
         String downloadedimageurl=await snap.ref.getDownloadURL();
         return downloadedimageurl;
       }
