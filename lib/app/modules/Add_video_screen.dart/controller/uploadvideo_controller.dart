@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:tiktokclone/resource/String.dart';
 import 'package:video_compress/video_compress.dart';
@@ -35,14 +36,33 @@ class UploadVideoController extends GetxController{
    return compressVideo!.file;
  }
 
+ Future<String>__uploadImageToStorage(String id,String videoPath)async
+    {
+      Reference ref=firebasestorage.ref().child('thumbnils').child(id);
+      UploadTask uploadtask=ref.putFile(await _getThumbnil(videoPath));
+      TaskSnapshot tasksnap=await uploadtask;
+      String downloadurl=await tasksnap.ref.getDownloadURL();
+      return downloadurl;
+   }
+
+   _getThumbnil(String videoPath)async{
+     final thumbnils=await VideoCompress.getFileThumbnail(videoPath);
+     return thumbnils;
+   }
+
   uploadVideonstoreDatabase(String songName,String videoCapTion, String videoPath) async{
      try{
         String uid=firebaseauth.currentUser!.uid;
         DocumentSnapshot userDoc= await firestore.collection('users').doc(uid).get();
-        var allDocs=await _uploadVideoToStorage("Video $len",videoPath);
+        var allDocs=await firestore.collection('videos').get();
+        int len=allDocs.docs.length;
+        String videoUrl=await _uploadVideoToStorage("Video $len", videoPath);
+        String thumbnils=await __uploadImageToStorage("Video $len", videoPath);   
+
+               
      }
-     catch{
-         
+     catch(e){
+        Get.snackbar("not upload video", "") ;
      }
   }
 }
