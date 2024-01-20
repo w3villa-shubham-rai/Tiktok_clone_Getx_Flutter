@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:tiktokclone/app/modules/Add_video_screen.dart/controller/uploadvideo_controller.dart';
 import 'package:tiktokclone/app/modules/Add_video_screen.dart/views/confirm_screen.dart';
 import 'package:video_player/video_player.dart';
 
@@ -18,7 +18,7 @@ class AddVideoScreenController extends GetxController {
 
   final songcontroller = TextEditingController();
   final captioncontroller = TextEditingController();
- 
+ UploadVideoController uploadVideoController=Get.put(UploadVideoController());
 
   @override
   Future<void> onInit() async {

@@ -1,12 +1,12 @@
-import 'dart:html';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
+import 'package:tiktokclone/app/modules/Add_video_screen.dart/models/video_upload_models.dart';
 import 'package:tiktokclone/resource/String.dart';
 import 'package:video_compress/video_compress.dart';
-
+import 'package:video_player/video_player.dart';
 class UploadVideoController extends GetxController{
 
 // UploadTask and   TaskSnapshot
@@ -49,6 +49,7 @@ class UploadVideoController extends GetxController{
      final thumbnils=await VideoCompress.getFileThumbnail(videoPath);
      return thumbnils;
    }
+   
 
   uploadVideonstoreDatabase(String songName,String videoCapTion, String videoPath) async{
      try{
@@ -59,6 +60,11 @@ class UploadVideoController extends GetxController{
         String videoUrl=await _uploadVideoToStorage("Video $len", videoPath);
         String thumbnils=await __uploadImageToStorage("Video $len", videoPath);   
 
+      VideoUploadmodels video=VideoUploadmodels(username: (userDoc.data()! as Map<String,dynamic>)['name'],uid: uid, id: "videos $len",likes: [],commentCount: 0,sharecount: 0,songName: songName,
+       videoUrl: videoUrl,profilephoto: (userDoc.data()! as Map<String,dynamic>)['profilephoto'], thumbnils: thumbnils, comments:  [], caption: '');
+
+       await FirebaseFirestore.instance.collection('videos').doc('Videos $len').set(video.tojson());
+       Get.back();
                
      }
      catch(e){

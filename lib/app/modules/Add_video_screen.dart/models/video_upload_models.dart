@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class VideoUploadmodels{
    String username;
    String uid;
@@ -11,7 +13,6 @@ class VideoUploadmodels{
    String videoUrl;
    String thumbnils;
    String profilephoto;
-
   VideoUploadmodels({required this.username, required this.uid, 
   required this.id,required this.likes,required this.commentCount,required this.comments, required this.sharecount, required this.songName,
   required this.caption,required this.videoUrl,required this.thumbnils,required this.profilephoto});
@@ -37,8 +38,8 @@ class VideoUploadmodels{
   static VideoUploadmodels frmoSnap(DocumentSnapshot snap)
   {
     var snapshot=snap.data()as Map<String,dynamic>;
-    return VideoUploadmodels(username: snapshot['username'],uid:snapshot['uid'], id: snapshot[id], )
-
+    return VideoUploadmodels(username: snapshot['username'],uid:snapshot['uid'], id: snapshot['id'],likes: snapshot['likes'], commentCount: snapshot['commentCount'],comments: snapshot['comments'],sharecount: snapshot['sharecount'],
+    songName: snapshot['songName'],caption: snapshot['caption'],videoUrl: snapshot['videoUrl'],thumbnils: snapshot['thumbnils'],profilephoto:snapshot['profilephoto'], );
   }
 
 }
