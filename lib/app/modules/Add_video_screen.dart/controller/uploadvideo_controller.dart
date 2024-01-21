@@ -31,10 +31,15 @@ class UploadVideoController extends GetxController{
 
  }
 
- _compressVideo(String videoPath)async{
-   final compressVideo=await VideoCompress.compressVideo(videoPath,quality: VideoQuality.MediumQuality);
-   return compressVideo!.file;
- }
+ _compressVideo(String? videoPath) async {
+  if (videoPath == null) {
+    // Handle the case where videoPath is null
+    return null;
+  }
+  final compressVideo = await VideoCompress.compressVideo(videoPath, quality: VideoQuality.MediumQuality);
+  return compressVideo?.file;
+}
+
 
  Future<String>__uploadImageToStorage(String id,String videoPath)async
     {
@@ -46,6 +51,11 @@ class UploadVideoController extends GetxController{
    }
 
    _getThumbnil(String videoPath)async{
+
+    if (videoPath == null) {
+    // Handle the case where videoPath is null
+    return null;
+  }
      final thumbnils=await VideoCompress.getFileThumbnail(videoPath);
      return thumbnils;
    }
@@ -61,7 +71,7 @@ class UploadVideoController extends GetxController{
         String thumbnils=await __uploadImageToStorage("Video $len", videoPath);   
 
       VideoUploadmodels video=VideoUploadmodels(username: (userDoc.data()! as Map<String,dynamic>)['name'],uid: uid, id: "videos $len",likes: [],commentCount: 0,sharecount: 0,songName: songName,
-       videoUrl: videoUrl,profilephoto: (userDoc.data()! as Map<String,dynamic>)['profilephoto'], thumbnils: thumbnils, comments:  [], caption: '');
+       videoUrl: videoUrl,profilephoto: (userDoc.data()! as Map<String,dynamic>)['profilephoto'], thumbnils: thumbnils, comments:  [], caption: videoCapTion);
 
        await FirebaseFirestore.instance.collection('videos').doc('Videos $len').set(video.tojson());
        Get.back();

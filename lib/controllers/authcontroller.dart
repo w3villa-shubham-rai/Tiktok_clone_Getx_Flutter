@@ -7,6 +7,7 @@ import 'package:tiktokclone/app/modules/HmoeScreen/views/homescree.dart';
 import 'package:tiktokclone/models/usermodel.dart' as model;
 import 'package:tiktokclone/resource/String.dart';
 import 'package:tiktokclone/view/widgets/screens/auth/login_scrren.dart';
+import 'package:tiktokclone/view/widgets/screens/auth/signup_screen.dart';
 class AuthController extends GetxController{  
 static AuthController instance=Get.find();
 
@@ -26,7 +27,7 @@ _setInitialScreen(User? user)
 {
   if(user==null)
   {
-    Get.offAll(()=>LoginScreen());
+    Get.offAll(()=>Signupscreen());
   }
   else{
     Get.offAll(()=> HomeScreen());
