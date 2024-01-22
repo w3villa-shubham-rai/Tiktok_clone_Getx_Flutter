@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:video_compress/video_compress.dart';
-
 class CircleAnimation extends StatefulWidget {
   final Widget child;
   const CircleAnimation({super.key,required this.child});
@@ -14,16 +12,14 @@ class _CircleAnimationState extends State<CircleAnimation> with SingleTickerProv
   late AnimationController controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-         controller=AnimationController(vsync: this,duration: Duration(milliseconds: 5000));
+         controller=AnimationController(vsync: this,duration: const Duration(milliseconds: 6000));
          controller.forward();
          controller.repeat();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     controller.dispose();
   }
