@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tiktokclone/app/modules/Add_video_screen.dart/controller/uploadvideo_controller.dart';
 import 'package:tiktokclone/app/modules/HmoeScreen/views/homescree.dart';
 import 'package:tiktokclone/models/usermodel.dart' as model;
 import 'package:tiktokclone/resource/String.dart';
@@ -15,7 +16,7 @@ static AuthController instance=Get.find();
  
 late Rx<File?> imageFile = File("").obs;
 
-
+ UploadVideoController uploadvideo_controller=Get.put(UploadVideoController());
 @override
   void onReady() {
     super.onReady();
@@ -100,6 +101,13 @@ void loginUser(String email, String password) async {
     Get.snackbar("User not logged in", e.toString());
   }
 }
+
+@override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+   uploadvideo_controller.fetchVideosData();
+  }
 
 }
 

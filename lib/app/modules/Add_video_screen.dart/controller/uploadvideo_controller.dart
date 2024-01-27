@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktokclone/app/modules/Add_video_screen.dart/models/video_upload_models.dart';
 import 'package:tiktokclone/resource/String.dart';
@@ -22,55 +23,50 @@ class UploadVideoController extends GetxController{
 
 
 
- Future<String?> _uploadVideoToStorage(String id, String videoPath) async {
-  print("check four ++++++++++++++ $id, $videoPath");
+Future<String> _uploadVideoToStorage(String id, String videoPath)async{
+   print("check four ++++++++++++++ $id, $videoPath");
 
-  Reference ref = firebasestorage.ref().child('videos').child(id);
+    Reference ref=firebasestorage.ref().child('videos').child(id);
 
-  File? compressedVideo = await _compressVideo(videoPath);
+    UploadTask uploadTask=ref.putFile(File(videoPath));
+    TaskSnapshot taskSnapshot=await uploadTask;
+    String downloadurl=await taskSnapshot.ref.getDownloadURL();    
+    return downloadurl; 
 
-  if (compressedVideo != null) {
-    try {
-      UploadTask uploadTask = ref.putFile(compressedVideo);
-      TaskSnapshot taskSnapshot = await uploadTask;
-      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-      return downloadUrl;
-    } catch (e) {
-      // Handle upload errors
-      print("Error uploading video: $e");
-      return null;
-    }
-  } else {
-    // Handle the case where video compression failed
-    print("Error compressing video or result is null");
-    return null;
-  }
-}
+ }
 
-Future<File?> _compressVideo(String? videoPath) async {
-  if (videoPath == null) {
-    // Handle the case where videoPath is null
-    return null;
-  }
+// Future<File?> _compressVideo(String? videoPath) async {
+//   if (videoPath == null) {
+//     // Handle the case where videoPath is null
+//     return null;
+//   }
 
-  try {
-    print("check three ++++++++++++++  $videoPath");
-    final compressVideo = await VideoCompress.compressVideo(videoPath, quality: VideoQuality.MediumQuality);
-
-    // Check if the compression was successful
-    if (compressVideo != null && compressVideo.file != null) {
-      return compressVideo.file;
-    } else {
-      // Handle the case where the compression result is null or the file is null
-      return null;
-    }
-  } catch (e) {
-    // Handle compression errors
-    print("Error compressing video: $e");
-    return null;
-  }
-}
-
+//   try {
+//     print("check three ++++++++++++++  $videoPath");
+//     final compressVideo = await VideoCompress.compressVideo(videoPath, quality: VideoQuality.MediumQuality);
+    
+//     // Check if the compression was successful
+//     if (compressVideo != null && compressVideo.file != null) {
+//       return compressVideo.file!;
+//     } else {
+//       // Handle the case where the compression result is null or the file is null
+//       return null;
+//     }
+//   } catch (e) {
+//     // Handle compression errors
+//     print("Error compressing video: $e");
+//     return null;
+//   }
+// }
+// try{
+//   await FirebaseFirestore.instance.collection('videos').get().then((value){
+//     dynamic datas = value.docs as List;
+//     dynamic val = datas[0].data() as Map;
+//     debugPrint("^^^^^^^^^^^^^^^^^^^^^^^^^^^^________________________+++++++++++++++++++=======================Response is ${val}");
+//   });
+// } catch(e){
+//   debugPrint("Error is ------------------------------------------------------------- $e");
+// }
 
 
 
@@ -138,5 +134,35 @@ Future<File?> _compressVideo(String? videoPath) async {
     Get.snackbar("Failed to upload video", "$e");
   }
 }
+
+
+List<VideoUploadmodels> datalist = [];
+
+void fetchVideosData() async {
+
+debugPrint("--------------------------------- Fetching Data-----------------------------------");
+
+  try {
+    final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    CollectionReference collection = fireStore.collection('videos');
+
+    QuerySnapshot querySnapshot = await collection.get();
+
+    datalist = querySnapshot.docs.map((doc) => VideoUploadmodels.fromSnap(doc)).toList();
+
+    debugPrint("Fetched Data: $datalist");
+  } catch (e) {
+    debugPrint("Error fetching data: $e");
+  }
+}
+
+
+
+
+@override
+  void onInit() {
+    super.onInit();
+    fetchVideosData();
+  }
 
 }

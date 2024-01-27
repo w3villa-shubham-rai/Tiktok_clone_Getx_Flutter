@@ -13,9 +13,10 @@ class _CircleAnimationState extends State<CircleAnimation> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-         controller=AnimationController(vsync: this,duration: const Duration(milliseconds: 6000));
+         controller=AnimationController(vsync: this,duration: const Duration(milliseconds: 5000));
          controller.forward();
          controller.repeat();
+        
   }
 
   @override

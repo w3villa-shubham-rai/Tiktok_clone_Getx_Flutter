@@ -41,14 +41,18 @@ class AddVideoScreenController extends GetxController {
   }
 
 
+
+
+
+
   buildMusicAlbum(String profilevideo)
   {
-    return SizedBox(width: 60,height: 60,
+    return SizedBox(width: 49,height: 49,
     child:Column(children: [
-      Container(padding: EdgeInsets.all(11),height: 50,width: 50,decoration: BoxDecoration(gradient: const LinearGradient(colors: [Colors.grey,Colors.white]),
+      Container(padding: EdgeInsets.all(11),height: 38,width: 38,decoration: BoxDecoration(gradient: const LinearGradient(colors: [Colors.grey,Colors.white]),
       borderRadius: BorderRadius.circular(25),      
       ),
-      child: ClipRRect(borderRadius: BorderRadius.circular(25),child: Image(image: NetworkImage('profilephoto'),fit: BoxFit.contain,),),
+      child: ClipRRect(borderRadius: BorderRadius.circular(24),child: Image(image: NetworkImage('profilephoto'),fit: BoxFit.contain,),),
       ),
     ],) ,);
 
