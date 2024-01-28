@@ -1,9 +1,11 @@
 
 
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -115,7 +117,7 @@ Future<String> _uploadVideoToStorage(String id, String videoPath)async{
     Map<String, dynamic> videoData = {
       'username': (userDoc.data()! as Map<String, dynamic>)['name'],
       'uid': uid,
-      'id': "videos $len",
+      'id': "Videos $len",
       'likes': [],
       'commentCount': 0,
       'sharecount': 0,
@@ -156,6 +158,44 @@ debugPrint("--------------------------------- Fetching Data---------------------
   }
 }
 
+RxBool likes=false.obs;
+var likescount=0;
+var sotervideoid;
+
+void likeDislikeFun({required String videoId} ) async
+{
+  // videoId=videoId;
+  sotervideoid=videoId;
+  // dislikeVideo(videoId: videoId);
+  
+var currentUser=firebaseauth.currentUser?.uid;
+
+DocumentSnapshot documentSnapshot =await FirebaseFirestore.instance.collection('videos').doc(videoId).get();
+ List<dynamic> likes = documentSnapshot['likes'] ?? [];
+ List<String> likesIds = likes.map((like) => like.toString()).toList();
+ likescount=likesIds.length;
+ if(likesIds.contains(currentUser))
+ {
+      var currentUserone=firebaseauth.currentUser?.uid;
+      await FirebaseFirestore.instance.collection('videos').doc(videoId).update({'likes':FieldValue.arrayRemove([currentUserone])});
+      likecount(videoId: videoId);
+ }
+ else{
+var currentUser=firebaseauth.currentUser?.uid;
+  await FirebaseFirestore.instance.collection('videos').doc(videoId).update({'likes':FieldValue.arrayUnion([currentUser])});
+  likecount(videoId: videoId);
+ } 
+
+}
+
+void likecount({required String videoId})async{
+   DocumentSnapshot documentSnapshot =await FirebaseFirestore.instance.collection('videos').doc(videoId).get();
+    List<dynamic> likes = documentSnapshot['likes'];
+     likescount=likes.length;
+
+     print("like number $likescount");
+
+}
 
 
 
@@ -163,6 +203,7 @@ debugPrint("--------------------------------- Fetching Data---------------------
   void onInit() {
     super.onInit();
     fetchVideosData();
+    likecount(videoId:sotervideoid);
   }
-
+   
 }

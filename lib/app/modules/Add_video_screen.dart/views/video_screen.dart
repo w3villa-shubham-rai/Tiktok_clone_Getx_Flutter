@@ -45,11 +45,11 @@ class VideoScreen extends GetView<AddVideoScreenController>
                          crossAxisAlignment: CrossAxisAlignment.start,
                         
                         children: [
-                            Text(uploadVideoController.datalist[Index].username,style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600),),
+                            Text(uploadVideoController.datalist[Index].username,style: const TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600),),
                            SizedBox(height: getFullheight(context,0.002)),                      
-                            Text(uploadVideoController.datalist[Index].caption,style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
+                            Text(uploadVideoController.datalist[Index].caption,style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
                             SizedBox(height: getFullheight(context,0.002),), 
-                            Text(uploadVideoController.datalist[Index].songName,style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
+                            Text(uploadVideoController.datalist[Index].songName,style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
                             SizedBox(height: getFullheight(context,0.002)), 
                            const Row(
                             children: [
@@ -78,11 +78,11 @@ class VideoScreen extends GetView<AddVideoScreenController>
                                 children: [
                               InkWell(
                                 onTap: (){
-                        
+                                 uploadVideoController.likeDislikeFun(videoId: uploadVideoController.datalist[Index].id);
                                 },
                                 child: const Icon(Icons.favorite,size: 33,color: Colors.red,)),
                                 const SizedBox(height: 7,),
-                                 Text(uploadVideoController.datalist[Index].likes.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
+                                 Text(uploadVideoController.likescount.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
                             ],),
                             const SizedBox(height: 15,),        
                         
