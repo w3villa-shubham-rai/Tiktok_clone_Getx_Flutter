@@ -19,6 +19,6 @@ AddVideoScreenController addVideoScreenController= Get.put(AddVideoScreenControl
 
   // List of Pges
   // final pages=['Home Screen','Search Screen','Add Page Screen','Message Screen','Profile Screen',];
-  final pages=[ VideoScreen(), Text('earch Screen'), AddVideoScreen(), Text('Message Screen'), Text('Profile Screen')];
+  final pages=[ VideoScreen(), Text('earch Screen'), AddVideoScreen(), VideoScreen(), Text('Profile Screen')];
   
 } 

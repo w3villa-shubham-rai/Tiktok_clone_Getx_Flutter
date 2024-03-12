@@ -96,22 +96,16 @@ Future<String> _uploadVideoToStorage(String id, String videoPath)async{
 
 Future<void> uploadVideoToFirestore(String songName, String videoCaption, String videoPath) async {
   try {
-    debugPrint("Check ++++++++++++++ $songName, $videoCaption, $videoPath");
-    // Ensure videoPath is not null
     if (videoPath == null) {
       debugPrint("Video Path find NULL");
       throw Exception("Video path is null");
     }
-    // Check if the user is authenticated
     if (firebaseauth.currentUser != null) {
       String uid = firebaseauth.currentUser!.uid;
       debugPrint("User UID is $uid");
-      // Retrieve user document
-      DocumentSnapshot userDoc = await firestore.collection('users').doc(uid).get();
       String time = DateTime.now().millisecondsSinceEpoch.toString();
       String? videoUrl = await _uploadVideoToStorage("$time", videoPath);
-      String thumbnails = await __uploadImageToStorage("$time", videoPath);
-        await firestore.collection('users').doc(uid).collection(time).add({
+      await firestore.collection('videoData').doc(time).set({
           'uid': uid,
           'id': "$time",
           'likes': [],
@@ -135,25 +129,31 @@ Future<void> uploadVideoToFirestore(String songName, String videoCaption, String
   }
 }
 
-List<VideoUploadmodels> datalist = [];
+List<VideoUploadmodels>  datalist = [];
+Future<List<VideoUploadmodels>> fetchVideosData() async {
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+    // String uid = firebaseauth.currentUser!.uid;  
+  CollectionReference collection = fireStore.collection('videoData'); 
+ try {   
+  QuerySnapshot querySnapshot = await collection.get();       
+  print('Number of documents: ${querySnapshot.docs.length}');
+  List<VideoUploadmodels> dataList = [];
+  querySnapshot.docs.forEach((doc) {
+    VideoUploadmodels video = VideoUploadmodels.fromMap(doc.data() as Map<String, dynamic>);
+    dataList.add(video);
+    debugPrint("VVVVVVVVVVVVVVVVVV?????????????${doc.data()}");
+    (doc.data() as Map).forEach((key, value) { 
+      debugPrint("Key is $key and Value is $value");
+    });
+  });
+   print('Number of documents++++++: ${dataList.length}');
+  return dataList;
+} catch (e) {
+  print("Error fetching data: $e");
+  return []; 
+}
+}
 
-// void fetchVideosData() async {
-
-// debugPrint("--------------------------------- Fetching Data-----------------------------------");
-
-//   try {
-//     final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-//     CollectionReference collection = fireStore.collection('videos');
-
-//     QuerySnapshot querySnapshot = await collection.get();
-
-//     datalist = querySnapshot.docs.map((doc) => VideoUploadmodels.fromSnap(doc)).toList();
-
-//     debugPrint("Fetched Data: $datalist");
-//   } catch (e) {
-//     debugPrint("Error fetching data: $e");
-//   }
-// }
 
 RxBool likes=false.obs;
 var likescount=0;
@@ -199,7 +199,7 @@ void likecount({required String videoId})async{
 @override
   void onInit() {
     super.onInit();
-    // fetchVideosData();
+    fetchVideosData();
     // likecount(videoId:sotervideoid);
   }
    

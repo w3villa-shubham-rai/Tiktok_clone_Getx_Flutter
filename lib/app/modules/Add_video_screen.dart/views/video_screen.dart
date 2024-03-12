@@ -22,6 +22,7 @@ class VideoScreen extends GetView<AddVideoScreenController>
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AddVideoScreenController>(builder: (controller){
+      uploadVideoController.datalist[0].caption;
        return Scaffold(
         body: PageView.builder(
           itemCount: uploadVideoController.datalist.length,
@@ -29,11 +30,12 @@ class VideoScreen extends GetView<AddVideoScreenController>
           scrollDirection: Axis.vertical,
           itemBuilder: (context, Index)        
           { 
-            // final data=uploadVideoController.datalist[Index];
+            final data=uploadVideoController.datalist[Index].caption;
+             print("data in ui uuui ))) $data");
             return  Stack(
                
               children: [
-                VideoPlayerItem(videoUrl: uploadVideoController.datalist[Index].videoUrl),
+                VideoPlayerItem(videoUrl: uploadVideoController.datalist[Index].videoUrl??""),
                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,11 +47,11 @@ class VideoScreen extends GetView<AddVideoScreenController>
                          crossAxisAlignment: CrossAxisAlignment.start,
                         
                         children: [
-                            Text(uploadVideoController.datalist[Index].username,style: const TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600),),
+                            // Text(uploadVideoController.datalist[Index].username,style: const TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600),),
                            SizedBox(height: getFullheight(context,0.002)),                      
-                            Text(uploadVideoController.datalist[Index].caption,style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
+                            Text(uploadVideoController.datalist[Index].caption??"",style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
                             SizedBox(height: getFullheight(context,0.002),), 
-                            Text(uploadVideoController.datalist[Index].songName,style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
+                            Text(uploadVideoController.datalist[Index].songName??"",style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
                             SizedBox(height: getFullheight(context,0.002)), 
                            const Row(
                             children: [
