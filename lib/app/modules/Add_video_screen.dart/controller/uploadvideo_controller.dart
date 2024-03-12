@@ -25,17 +25,7 @@ class UploadVideoController extends GetxController{
 
 
 
-Future<String> _uploadVideoToStorage(String id, String videoPath)async{
-   print("check four ++++++++++++++ $id, $videoPath");
 
-    Reference ref=firebasestorage.ref().child('videos').child(id);
-
-    UploadTask uploadTask=ref.putFile(File(videoPath));
-    TaskSnapshot taskSnapshot=await uploadTask;
-    String downloadurl=await taskSnapshot.ref.getDownloadURL();    
-    return downloadurl; 
-
- }
 
 // Future<File?> _compressVideo(String? videoPath) async {
 //   if (videoPath == null) {
@@ -71,6 +61,17 @@ Future<String> _uploadVideoToStorage(String id, String videoPath)async{
 // }
 
 
+Future<String> _uploadVideoToStorage(String id, String videoPath)async{
+   print("check four ++++++++++++++ $id, $videoPath");
+
+    Reference ref=firebasestorage.ref().child('videos').child(id);
+
+    UploadTask uploadTask=ref.putFile(File(videoPath));
+    TaskSnapshot taskSnapshot=await uploadTask;
+    String downloadurl=await taskSnapshot.ref.getDownloadURL();    
+    return downloadurl; 
+
+ }
 
  Future<String>__uploadImageToStorage(String id,String videoPath)async
     {
@@ -93,100 +94,96 @@ Future<String> _uploadVideoToStorage(String id, String videoPath)async{
    }
    
 
- Future<void> uploadVideonstoreDatabase(String songName, String videoCaption, String videoPath) async {
+Future<void> uploadVideoToFirestore(String songName, String videoCaption, String videoPath) async {
   try {
-    print("check ++++++++++++++ $songName, $videoCaption, $videoPath");
-
+    debugPrint("Check ++++++++++++++ $songName, $videoCaption, $videoPath");
     // Ensure videoPath is not null
     if (videoPath == null) {
+      debugPrint("Video Path find NULL");
       throw Exception("Video path is null");
     }
-
-    String uid = firebaseauth.currentUser!.uid;
-    DocumentSnapshot userDoc = await firestore.collection('users').doc(uid).get();
-    var allDocs = await firestore.collection('videos').get();
-    int len = allDocs.docs.length;
-
-    print("Before _uploadVideoToStorage");
-    String? videoUrl = await _uploadVideoToStorage("Video $len", videoPath);
-    print("After _uploadVideoToStorage");
-
-    String thumbnails = await __uploadImageToStorage("Video $len", videoPath);
-    print("check one ++++++++++++++ $songName, $videoCaption, $videoPath");
-
-    Map<String, dynamic> videoData = {
-      'username': (userDoc.data()! as Map<String, dynamic>)['name'],
-      'uid': uid,
-      'id': "Videos $len",
-      'likes': [],
-      'commentCount': 0,
-      'sharecount': 0,
-      'songName': songName,
-      'videoUrl': videoUrl,
-      'profilephoto': (userDoc.data()! as Map<String, dynamic>)['profilephoto'],
-      'thumbnails': thumbnails,
-      'comments': [],
-      'caption': videoCaption,
-    };
-
-    await FirebaseFirestore.instance.collection('videos').doc('Videos $len').set(videoData);
-    Get.back();
+    // Check if the user is authenticated
+    if (firebaseauth.currentUser != null) {
+      String uid = firebaseauth.currentUser!.uid;
+      debugPrint("User UID is $uid");
+      // Retrieve user document
+      DocumentSnapshot userDoc = await firestore.collection('users').doc(uid).get();
+      String time = DateTime.now().millisecondsSinceEpoch.toString();
+      String? videoUrl = await _uploadVideoToStorage("$time", videoPath);
+      String thumbnails = await __uploadImageToStorage("$time", videoPath);
+        await firestore.collection('users').doc(uid).collection(time).add({
+          'uid': uid,
+          'id': "$time",
+          'likes': [],
+          'commentCount': 0,
+          'sharecount': 0,
+          'songName': songName,
+          'videoUrl': videoUrl,
+          // 'profilephoto': userData['profilephoto'],
+          'thumbnails': 'thumbnails',
+          'comments': [],
+          'caption': videoCaption,
+        });
+    } else {
+      // Handle the case where the user is not authenticated
+      print("User is not authenticated");
+      // You can show a message or navigate to the login screen
+    }
   } catch (e) {
-    print("Error in uploadVideonstoreDatabase: $e");
+    print("Error in uploadVideoToFirestore: $e");
     Get.snackbar("Failed to upload video", "$e");
   }
 }
 
-
 List<VideoUploadmodels> datalist = [];
 
-void fetchVideosData() async {
+// void fetchVideosData() async {
 
-debugPrint("--------------------------------- Fetching Data-----------------------------------");
+// debugPrint("--------------------------------- Fetching Data-----------------------------------");
 
-  try {
-    final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-    CollectionReference collection = fireStore.collection('videos');
+//   try {
+//     final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+//     CollectionReference collection = fireStore.collection('videos');
 
-    QuerySnapshot querySnapshot = await collection.get();
+//     QuerySnapshot querySnapshot = await collection.get();
 
-    datalist = querySnapshot.docs.map((doc) => VideoUploadmodels.fromSnap(doc)).toList();
+//     datalist = querySnapshot.docs.map((doc) => VideoUploadmodels.fromSnap(doc)).toList();
 
-    debugPrint("Fetched Data: $datalist");
-  } catch (e) {
-    debugPrint("Error fetching data: $e");
-  }
-}
+//     debugPrint("Fetched Data: $datalist");
+//   } catch (e) {
+//     debugPrint("Error fetching data: $e");
+//   }
+// }
 
 RxBool likes=false.obs;
 var likescount=0;
 var sotervideoid;
 
-void likeDislikeFun({required String videoId} ) async
-{
-  // videoId=videoId;
-  sotervideoid=videoId;
-  // dislikeVideo(videoId: videoId);
+// void likeDislikeFun({required String videoId} ) async
+// {
+//   // videoId=videoId;
+//   sotervideoid=videoId;
+//   // dislikeVideo(videoId: videoId);
   
-var currentUser=firebaseauth.currentUser?.uid;
+// var currentUser=firebaseauth.currentUser?.uid;
 
-DocumentSnapshot documentSnapshot =await FirebaseFirestore.instance.collection('videos').doc(videoId).get();
- List<dynamic> likes = documentSnapshot['likes'] ?? [];
- List<String> likesIds = likes.map((like) => like.toString()).toList();
- likescount=likesIds.length;
- if(likesIds.contains(currentUser))
- {
-      var currentUserone=firebaseauth.currentUser?.uid;
-      await FirebaseFirestore.instance.collection('videos').doc(videoId).update({'likes':FieldValue.arrayRemove([currentUserone])});
-      likecount(videoId: videoId);
- }
- else{
-var currentUser=firebaseauth.currentUser?.uid;
-  await FirebaseFirestore.instance.collection('videos').doc(videoId).update({'likes':FieldValue.arrayUnion([currentUser])});
-  likecount(videoId: videoId);
- } 
+// DocumentSnapshot documentSnapshot =await FirebaseFirestore.instance.collection('videos').doc(videoId).get();
+//  List<dynamic> likes = documentSnapshot['likes'] ?? [];
+//  List<String> likesIds = likes.map((like) => like.toString()).toList();
+//  likescount=likesIds.length;
+//  if(likesIds.contains(currentUser))
+//  {
+//       var currentUserone=firebaseauth.currentUser?.uid;
+//       await FirebaseFirestore.instance.collection('videos').doc(videoId).update({'likes':FieldValue.arrayRemove([currentUserone])});
+//       likecount(videoId: videoId);
+//  }
+//  else{
+// var currentUser=firebaseauth.currentUser?.uid;
+//   await FirebaseFirestore.instance.collection('videos').doc(videoId).update({'likes':FieldValue.arrayUnion([currentUser])});
+//   likecount(videoId: videoId);
+//  } 
 
-}
+// }
 
 void likecount({required String videoId})async{
    DocumentSnapshot documentSnapshot =await FirebaseFirestore.instance.collection('videos').doc(videoId).get();
@@ -202,8 +199,8 @@ void likecount({required String videoId})async{
 @override
   void onInit() {
     super.onInit();
-    fetchVideosData();
-    likecount(videoId:sotervideoid);
+    // fetchVideosData();
+    // likecount(videoId:sotervideoid);
   }
    
 }

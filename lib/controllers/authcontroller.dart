@@ -106,7 +106,7 @@ void loginUser(String email, String password) async {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-   uploadvideo_controller.fetchVideosData();
+  //  uploadvideo_controller.fetchVideosData();
   }
 
 }

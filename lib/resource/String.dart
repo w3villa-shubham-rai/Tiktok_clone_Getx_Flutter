@@ -8,8 +8,5 @@ var firebasestorage=FirebaseStorage.instance;
 var firestore=FirebaseFirestore.instance;
 
 
-// Controller
-
-
 var authcontroller=AuthController.instance;
 

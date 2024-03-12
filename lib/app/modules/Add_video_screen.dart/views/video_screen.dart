@@ -78,7 +78,7 @@ class VideoScreen extends GetView<AddVideoScreenController>
                                 children: [
                               InkWell(
                                 onTap: (){
-                                 uploadVideoController.likeDislikeFun(videoId: uploadVideoController.datalist[Index].id);
+                                //  uploadVideoController.likeDislikeFun(videoId: uploadVideoController.datalist[Index].id);
                                 },
                                 child: const Icon(Icons.favorite,size: 33,color: Colors.red,)),
                                 const SizedBox(height: 7,),

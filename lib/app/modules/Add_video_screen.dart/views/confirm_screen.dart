@@ -83,7 +83,8 @@ class ConfirmScren extends GetView<AddVideoScreenController>{
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: ElevatedButton(onPressed: (){
-                        controller.uploadVideoController.uploadVideonstoreDatabase(controller.songcontroller.text, controller.captioncontroller.text, controller.videopath.toString());
+                        debugPrint("Calling Share");
+                        controller.uploadVideoController.uploadVideoToFirestore(controller.songcontroller.text, controller.captioncontroller.text, controller.videopath.toString());
                       }, child: const Text("Share",style: TextStyle(fontSize: 20,color: Colors.white),)),
                     )
                   ],

@@ -44,39 +44,41 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBN1VnXpQnLDG7TzhLQwUAvn4g9nLLMP2w',
-    appId: '1:297651488892:web:bac791b8aa0fd3aa96e1f9',
-    messagingSenderId: '297651488892',
-    projectId: 'tiktokclone-12f50',
-    authDomain: 'tiktokclone-12f50.firebaseapp.com',
-    storageBucket: 'tiktokclone-12f50.appspot.com',
+    apiKey: 'AIzaSyC93bnxHYJXR0VVi6pK5fzlc3yVIHhVeDA',
+    appId: '1:566760164098:web:20b2cea043c222f6d2101b',
+    messagingSenderId: '566760164098',
+    projectId: 'tiktokclonetwo',
+    authDomain: 'tiktokclonetwo.firebaseapp.com',
+    databaseURL: 'https://tiktokclonetwo-default-rtdb.firebaseio.com',
+    storageBucket: 'tiktokclonetwo.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBDgbnpS_O-W7mo7e9RygVonqw3pScvUEk',
-    appId: '1:297651488892:android:72c1e52cedcabcbf96e1f9',
-    messagingSenderId: '297651488892',
-    projectId: 'tiktokclone-12f50',
-    storageBucket: 'tiktokclone-12f50.appspot.com',
+    apiKey: 'AIzaSyDI_sCVwA4qeQt7InxC27I1eUCvFgvn1Uk',
+    appId: '1:566760164098:android:e5d6a47f277cb4e1d2101b',
+    messagingSenderId: '566760164098',
+    projectId: 'tiktokclonetwo',
+    databaseURL: 'https://tiktokclonetwo-default-rtdb.firebaseio.com',
+    storageBucket: 'tiktokclonetwo.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDDkpuK7hlNVwPBZ10W468Z6qpHHpbt4cA',
-    appId: '1:297651488892:ios:c711660d6ccb403196e1f9',
-    messagingSenderId: '297651488892',
-    projectId: 'tiktokclone-12f50',
-    storageBucket: 'tiktokclone-12f50.appspot.com',
-    iosClientId: '297651488892-etvh504f9eej0c6ut461tmr3aciipn1s.apps.googleusercontent.com',
+    apiKey: 'AIzaSyA_vYslE9I2UMZS5A36PGQDCFAAQ6WG2go',
+    appId: '1:566760164098:ios:fb2562d5145a53f2d2101b',
+    messagingSenderId: '566760164098',
+    projectId: 'tiktokclonetwo',
+    databaseURL: 'https://tiktokclonetwo-default-rtdb.firebaseio.com',
+    storageBucket: 'tiktokclonetwo.appspot.com',
     iosBundleId: 'com.example.tiktokclone',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDDkpuK7hlNVwPBZ10W468Z6qpHHpbt4cA',
-    appId: '1:297651488892:ios:9bf7eecd3148029b96e1f9',
-    messagingSenderId: '297651488892',
-    projectId: 'tiktokclone-12f50',
-    storageBucket: 'tiktokclone-12f50.appspot.com',
-    iosClientId: '297651488892-vv4vee4oo40ga69m41r82fu3i9lk84c0.apps.googleusercontent.com',
+    apiKey: 'AIzaSyA_vYslE9I2UMZS5A36PGQDCFAAQ6WG2go',
+    appId: '1:566760164098:ios:2ea67216f814ebf4d2101b',
+    messagingSenderId: '566760164098',
+    projectId: 'tiktokclonetwo',
+    databaseURL: 'https://tiktokclonetwo-default-rtdb.firebaseio.com',
+    storageBucket: 'tiktokclonetwo.appspot.com',
     iosBundleId: 'com.example.tiktokclone.RunnerTests',
   );
 }
