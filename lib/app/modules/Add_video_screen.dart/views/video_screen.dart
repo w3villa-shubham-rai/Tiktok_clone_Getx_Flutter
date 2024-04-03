@@ -1,6 +1,5 @@
 
-import 'dart:ffi';
-import 'dart:math';
+
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,114 +16,120 @@ import 'package:tiktokclone/widgets/circle_animation.dart';
 class VideoScreen extends GetView<AddVideoScreenController>
 {
    VideoScreen({super.key});
- final UploadVideoController uploadVideoController=Get.put(UploadVideoController());
+ final UploadVideoController uploadVideoController=Get.put(UploadVideoController(), permanent: true);
+ final AddVideoScreenController addVideoScreenController=Get.put(AddVideoScreenController(),permanent: true);
   var logger = Logger();
   @override
   Widget build(BuildContext context) {
+      print("length of data _______________${uploadVideoController.datalist.length}");
     return GetBuilder<AddVideoScreenController>(builder: (controller){
-      uploadVideoController.datalist[0].caption;
-       return Scaffold(
-        body: PageView.builder(
-          itemCount: uploadVideoController.datalist.length,
-          controller: PageController(initialPage: 0,viewportFraction: 1),
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, Index)        
-          { 
-            final data=uploadVideoController.datalist[Index].caption;
-             print("data in ui uuui ))) $data");
-            return  Stack(
-               
-              children: [
-                VideoPlayerItem(videoUrl: uploadVideoController.datalist[Index].videoUrl??""),
-               
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  
-                  children: [
-                    Padding(
-                      padding:  EdgeInsets.only(top: getFullheight(context,77.0)),
-                      child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                        
-                        children: [
-                            // Text(uploadVideoController.datalist[Index].username,style: const TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600),),
-                           SizedBox(height: getFullheight(context,0.002)),                      
-                            Text(uploadVideoController.datalist[Index].caption??"",style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
-                            SizedBox(height: getFullheight(context,0.002),), 
-                            Text(uploadVideoController.datalist[Index].songName??"",style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
-                            SizedBox(height: getFullheight(context,0.002)), 
-                           const Row(
-                            children: [
-                                    Icon(Icons.music_note,size: 12,color: Colors.white,),
-                                    Text('Roddy Roundicch - The Rou',style: TextStyle(fontSize: 15,color: Colors.white),)
-                            ],),
-                             SizedBox(height: getFullheight(context,1)), 
-                      
-                      ],),
-                    ),
-                     Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              child: Container(
-                                width: 20,
-                                height: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 15,),
-                              Column(
-                                children: [
-                              InkWell(
-                                onTap: (){
-                                //  uploadVideoController.likeDislikeFun(videoId: uploadVideoController.datalist[Index].id);
-                                },
-                                child: const Icon(Icons.favorite,size: 33,color: Colors.red,)),
-                                const SizedBox(height: 7,),
-                                 Text(uploadVideoController.likescount.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
-                            ],),
-                            const SizedBox(height: 15,),        
-                        
-                             Column(
-                                children: [
-                              InkWell(
-                                onTap: (){
-                        
-                                },
-                                child: const SVGImage(imagePath: ImgAssetPath.commenticon, imageType: ImageType.svg)),
-                                const SizedBox(height: 7,),
-                                 Text(uploadVideoController.datalist[Index].commentCount.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
-                            ],),
-                        
-                        
-                             Column(
-                                children: [
-                              InkWell(
-                                onTap: (){
-                        
-                                },
-                                child: const SVGImage(imagePath: ImgAssetPath.shareIcon, imageType: ImageType.svg)),
-                                const SizedBox(height: 7,),
-                                 Text(uploadVideoController.datalist[Index].sharecount.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
-                            ],),
-                            CircleAnimation(child:controller.buildMusicAlbum("profile photo"),)
-                          ],                            
-                        )                  
-                      
+      // uploadVideoController.datalist[0].caption;
+       return InkWell(
+        onTap: () {
+         
+        },
+         child: Scaffold(
+          body: PageView.builder(
+            itemCount: uploadVideoController.datalist.length,          
+            controller: PageController(initialPage: 0),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, Index)        
+            { 
+              final data=uploadVideoController.datalist[Index].caption;
+         
+               print("data in ui uuui ))) ${uploadVideoController.datalist[Index].videoUrl}");
+              return  Stack(               
+                children: [
+                  VideoPlayerItem(videoUrl: uploadVideoController.datalist[Index].videoUrl??""),
+                 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.only(top: getFullheight(context,77.0)),
+                        child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
                           
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ).marginOnly(left: 12);
-          
+                          children: [
+                              // Text(uploadVideoController.datalist[Index].username,style: const TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600),),
+                             SizedBox(height: getFullheight(context,0.002)),                      
+                              Text(uploadVideoController.datalist[Index].caption??"",style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
+                              SizedBox(height: getFullheight(context,0.002),), 
+                              Text(uploadVideoController.datalist[Index].songName??"",style: const TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w400)),
+                              SizedBox(height: getFullheight(context,0.002)), 
+                             const Row(
+                              children: [
+                                      Icon(Icons.music_note,size: 12,color: Colors.white,),
+                                      Text('Roddy Roundicch - The Rou',style: TextStyle(fontSize: 15,color: Colors.white),)
+                              ],),
+                               SizedBox(height: getFullheight(context,1)), 
+                        
+                        ],),
+                      ),
+                       Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                child: Container(
+                                  width: 20,
+                                  height: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 15,),
+                                Column(
+                                  children: [
+                                InkWell(
+                                  onTap: (){
+                                  //  uploadVideoController.likeDislikeFun(videoId: uploadVideoController.datalist[Index].id);
+                                  },
+                                  child: const Icon(Icons.favorite,size: 33,color: Colors.red,)),
+                                  const SizedBox(height: 7,),
+                                   Text(uploadVideoController.likescount.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
+                              ],),
+                              const SizedBox(height: 15,),        
+                          
+                               Column(
+                                  children: [
+                                InkWell(
+                                  onTap: (){
+                          
+                                  },
+                                  child: const SVGImage(imagePath: ImgAssetPath.commenticon, imageType: ImageType.svg)),
+                                  const SizedBox(height: 7,),
+                                   Text(uploadVideoController.datalist[Index].commentCount.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
+                              ],),                        
+                          
+                               Column(
+                                  children: [
+                                InkWell(
+                                  onTap: (){
+                          
+                                  },
+                                  child: const SVGImage(imagePath: ImgAssetPath.shareIcon, imageType: ImageType.svg)),
+                                  const SizedBox(height: 7,),
+                                   Text(uploadVideoController.datalist[Index].sharecount.toString(),style: TextStyle(fontSize: 13,color: Colors.white),),
+                              ],),
+                              CircleAnimation(child:controller.buildMusicAlbum("profile photo"),)
+                            ],                            
+                          )                  
+                        
+                            
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ).marginOnly(left: 12);
             
-
-          }),
+              
+         
+            }),
+         ),
        );
     });
   }

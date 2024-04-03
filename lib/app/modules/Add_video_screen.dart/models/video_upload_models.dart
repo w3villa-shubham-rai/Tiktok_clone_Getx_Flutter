@@ -1,16 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class VideoUploadmodels {
-  final String? uid;
-  final String? id;
-  final List<dynamic>? likes;
-  final int? commentCount;
-  final int? sharecount;
-  final String? songName;
-  final String? videoUrl;
-  final String? thumbnails;
-  final List<dynamic>? comments;
-  final String? caption;
+  final String uid;
+  final String id;
+  final List<String> likes;
+  final int commentCount;
+  final int sharecount;
+  final String songName;
+  final String videoUrl;
+  final String thumbnails;
+  final List<Map<String, dynamic>> comments;
+  final String caption;
 
   VideoUploadmodels({
     required this.uid,
@@ -26,21 +24,17 @@ class VideoUploadmodels {
   });
 
   factory VideoUploadmodels.fromMap(Map<String, dynamic> data) {
-  return VideoUploadmodels(
-    uid: data['uid'],
-    id: data['id'],
-    likes: List<dynamic>.from(data['likes']),
-    commentCount: data['commentCount'],
-    sharecount: data['sharecount'],
-    songName: data['songName'],
-    videoUrl: data['videoUrl'],
-    thumbnails: data['thumbnails'],
-    comments: List<dynamic>.from(data['comments']),
-    caption: data['caption'],
-  );
+    return VideoUploadmodels(
+      uid: data['uid'] ?? '',
+      id: data['id'] ?? '',
+      likes: List<String>.from(data['likes'] ?? []),
+      commentCount: data['commentCount'] ?? 0,
+      sharecount: data['sharecount'] ?? 0,
+      songName: data['songName'] ?? '',
+      videoUrl: data['videoUrl'] ?? '',
+      thumbnails: data['thumbnails'] ?? '',
+      comments: List<Map<String, dynamic>>.from(data['comments'] ?? []),
+      caption: data['caption'] ?? '',
+    );
+  }
 }
- 
-  
-  
-}
-

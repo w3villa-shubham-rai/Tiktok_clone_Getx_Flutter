@@ -8,7 +8,9 @@ class VideoPlayerItem extends StatefulWidget {
 
   @override
   State<VideoPlayerItem> createState() => _VideoPlayerItemState();
+  
 }
+
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
   late VideoPlayerController videoPlayerController;
@@ -16,9 +18,11 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
   @override
   void initState() {
     super.initState();
-    videoPlayerController=VideoPlayerController.asset(widget.videoUrl)..initialize().then((value) {
+    videoPlayerController=VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))..initialize().then((value) {
       videoPlayerController.play();
+      //  videoPlayerController.pause();
       videoPlayerController.setVolume(1);
+    
     });
   }
 
@@ -28,16 +32,36 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
      videoPlayerController.dispose();
   }
 
+  // void togglePlayPause() {
+  //   setState(() {
+  //     if (videoPlayerController.value.isPlaying) {
+  //       videoPlayerController.pause();
+  //     } else {
+  //       videoPlayerController.play();
+  //     }
+  //   });
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
-        color: Colors.black,
-      ),
-      child: VideoPlayer(videoPlayerController),
-    );
+   return FutureBuilder(future: videoPlayerController.initialize(), builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+                 return Container(
+               width: MediaQuery.of(context).size.width,
+               height: MediaQuery.of(context).size.height,
+               decoration: const BoxDecoration(
+                 color: Colors.black,
+               ),
+               child: VideoPlayer(videoPlayerController),
+      );
+      }
+      else{
+        return const Center(child: CircularProgressIndicator());
+      }
+    },);
   }
 }
+
+

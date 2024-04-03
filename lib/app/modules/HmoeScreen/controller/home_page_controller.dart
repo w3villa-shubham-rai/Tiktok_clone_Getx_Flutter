@@ -8,8 +8,8 @@ import 'package:tiktokclone/app/modules/Add_video_screen.dart/views/video_screen
 class Homepagecontroller extends GetxController{
 
   RxInt index=0.obs;
-AddVideoScreenController addVideoScreenController= Get.put(AddVideoScreenController());
- 
+  AddVideoScreenController addVideoScreenController= Get.put(AddVideoScreenController());
+
   void trackIndexBottomnavigationBar(int indexofBottombNavigation)
   {
      index.value=indexofBottombNavigation;

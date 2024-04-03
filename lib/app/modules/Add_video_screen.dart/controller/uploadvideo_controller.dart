@@ -1,11 +1,10 @@
 
 
-import 'dart:ffi';
+
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +14,6 @@ import 'package:video_compress/video_compress.dart';
 class UploadVideoController extends GetxController{
 
 // UploadTask and   TaskSnapshot
-
 
 // in Firebase, a DocumentSnapshot is an object that 
 // represents a snapshot of a document from a Firestore database. Firestore is a 
@@ -117,7 +115,7 @@ Future<void> uploadVideoToFirestore(String songName, String videoCaption, String
           'thumbnails': 'thumbnails',
           'comments': [],
           'caption': videoCaption,
-        });
+        }).then((value) => Get.snackbar("Video Upload ", "Successfully"));
     } else {
       // Handle the case where the user is not authenticated
       print("User is not authenticated");
@@ -132,22 +130,21 @@ Future<void> uploadVideoToFirestore(String songName, String videoCaption, String
 List<VideoUploadmodels>  datalist = [];
 Future<List<VideoUploadmodels>> fetchVideosData() async {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-    // String uid = firebaseauth.currentUser!.uid;  
   CollectionReference collection = fireStore.collection('videoData'); 
  try {   
   QuerySnapshot querySnapshot = await collection.get();       
   print('Number of documents: ${querySnapshot.docs.length}');
-  List<VideoUploadmodels> dataList = [];
+ 
   querySnapshot.docs.forEach((doc) {
     VideoUploadmodels video = VideoUploadmodels.fromMap(doc.data() as Map<String, dynamic>);
-    dataList.add(video);
+    datalist.add(video);
     debugPrint("VVVVVVVVVVVVVVVVVV?????????????${doc.data()}");
     (doc.data() as Map).forEach((key, value) { 
       debugPrint("Key is $key and Value is $value");
     });
   });
-   print('Number of documents++++++: ${dataList.length}');
-  return dataList;
+   print('Number of documents++++++: ${datalist.length}');
+  return datalist;
 } catch (e) {
   print("Error fetching data: $e");
   return []; 
@@ -195,6 +192,19 @@ void likecount({required String videoId})async{
 }
 
 
+Future<void> likePost(String UserId)async{
+   try{
+
+   }
+   catch(e){
+
+   }
+   finally{
+
+   }
+}
+
+
 
 @override
   void onInit() {
@@ -202,5 +212,6 @@ void likecount({required String videoId})async{
     fetchVideosData();
     // likecount(videoId:sotervideoid);
   }
+
    
 }

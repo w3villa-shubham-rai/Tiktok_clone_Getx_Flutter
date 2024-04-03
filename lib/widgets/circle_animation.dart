@@ -16,6 +16,7 @@ class _CircleAnimationState extends State<CircleAnimation> with SingleTickerProv
          controller=AnimationController(vsync: this,duration: const Duration(milliseconds: 5000));
          controller.forward();
          controller.repeat();
+         
         
   }
 
